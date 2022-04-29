@@ -5,12 +5,12 @@ public class MailRequestData {
 	private String from;
 	private String password;
 	private String to;
-	private byte[] content;
+	private String content;
 
 	public MailRequestData() {
 	}
 
-	public MailRequestData(String from, String password, String to, byte[] content) {
+	public MailRequestData(String from, String password, String to, String content) {
 		super();
 		this.from = from;
 		this.password = password;
@@ -42,11 +42,11 @@ public class MailRequestData {
 		this.to = to;
 	}
 
-	public byte[] getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setContent(byte[] content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 

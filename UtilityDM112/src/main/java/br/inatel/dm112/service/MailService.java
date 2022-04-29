@@ -10,9 +10,9 @@ import br.inatel.dm112.rest.support.UtilityException;
 public class MailService {
 
 	public void sendMail(MailRequestData mailData) {
-		if (mailData.getFrom() == null || 
-				mailData.getPassword() == null || 
-				mailData.getTo() == null || 
+		if (mailData.getFrom() == null ||
+				mailData.getPassword() == null ||
+				mailData.getTo() == null ||
 				mailData.getContent() == null) {
 			throw new UtilityException("Null values not allowed in MailRequestData.");
 		}

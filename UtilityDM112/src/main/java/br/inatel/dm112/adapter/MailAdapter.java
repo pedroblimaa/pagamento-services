@@ -2,7 +2,6 @@ package br.inatel.dm112.adapter;
 
 import java.util.Properties;
 
-import javax.activation.DataHandler;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -14,19 +13,24 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.util.ByteArrayDataSource;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 public class MailAdapter {
 
-	public void sendMail(final String from, final String password, String to, byte[] content) {
+	public void sendMail(final String from, final String password, String to, String content) {
 
 		System.out.println("Enviando email para: " + to);
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.office365.com");
 		props.put("mail.smtp.port", "587");
+
+		System.out.println(from);
+		System.out.println(password);
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -38,20 +42,12 @@ public class MailAdapter {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject("Boleto");
+			message.setSubject("Registro de Entrega");
 
 			Multipart multipart = new MimeMultipart();
 			BodyPart messageBodyPartText = new MimeBodyPart(); // texto
-			messageBodyPartText.setText("Boleto gerado pelo sistema de Vendas");
+			messageBodyPartText.setText(content);
 			multipart.addBodyPart(messageBodyPartText);
-
-			BodyPart messageBodyPartAtt = new MimeBodyPart(); // anexo
-			ByteArrayDataSource source = new ByteArrayDataSource(content, "application/pdf");
-			source.setName("Boleto.pdf");
-
-			messageBodyPartAtt.setDataHandler(new DataHandler(source));
-			messageBodyPartAtt.setFileName("Boleto_Venda.pdf");
-			multipart.addBodyPart(messageBodyPartAtt);
 
 			message.setContent(multipart);
 
